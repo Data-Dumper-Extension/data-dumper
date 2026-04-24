@@ -32,6 +32,12 @@ document.querySelectorAll(".tab").forEach(tab => {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     tab.classList.add("active");
     document.getElementById(`page-${tab.dataset.tab}`).classList.add("active");
+    const preview = document.getElementById("step-preview");
+    if (tab.dataset.tab === "scraper") {
+      if (scrapedData.length) preview.classList.remove("hidden");
+    } else {
+      preview.classList.add("hidden");
+    }
   });
 });
 
@@ -464,6 +470,7 @@ document.getElementById("btn-harvest-links").addEventListener("click", async () 
     internal: document.getElementById("links-internal").checked,
     mailto: document.getElementById("links-mailto").checked,
     tel: document.getElementById("links-tel").checked,
+    protocol: document.getElementById("links-protocol").checked,
   };
 
   showStatus("Harvesting links...");

@@ -360,7 +360,12 @@
         try {
           const u = new URL(href);
           domain = u.hostname;
-          type = domain === pageHost ? "internal" : "external";
+          if (u.protocol === "http:" || u.protocol === "https:") {
+            type = domain === pageHost ? "internal" : "external";
+          } else {
+            type = "protocol";
+            domain = u.protocol.replace(/:$/, "");
+          }
         } catch { return; }
       }
 
