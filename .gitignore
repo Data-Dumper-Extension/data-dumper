@@ -1,0 +1,18 @@
+# Test output / sample data
+test-output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Packed extensions
+*.xpi
+*.crx
+*.zip
+web-ext-artifacts/

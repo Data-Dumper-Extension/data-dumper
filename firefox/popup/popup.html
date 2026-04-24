@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon.svg" alt="DD" class="logo">
+    <h1>Data Dumper</h1>
+  </header>
+
+  <!-- Tab navigation -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="scraper">Scraper</button>
+    <button class="tab" data-tab="osint">OSINT Tools</button>
+  </nav>
+
+  <!-- ════════ SCRAPER PAGE ════════ -->
+  <div id="page-scraper" class="page active">
+
+    <!-- Full page scan -->
+    <section class="step">
+      <button id="btn-full-scan" class="accent wide">Full Page Scan</button>
+      <p class="hint">Extract everything — entities, links, tables, images — no picking needed.</p>
+    </section>
+
+    <details id="manual-section" class="collapsible">
+      <summary class="divider-toggle"><span>Manual Selection</span></summary>
+
+      <section id="step-select" class="step">
+        <h2>1. Select Data</h2>
+        <p class="hint">Click elements on the page to define columns.</p>
+        <button id="btn-select" class="primary">Pick Elements</button>
+        <button id="btn-pick-next" class="secondary">Pick "Next" Button</button>
+        <div id="selector-list" class="selector-list"></div>
+      </section>
+
+      <section id="step-config" class="step">
+        <h2>2. Configure</h2>
+        <div class="field">
+          <label>Mode</label>
+          <select id="scrape-mode">
+            <option value="single">Single Page</option>
+            <option value="pagination">Pagination</option>
+            <option value="scroll">Infinite Scroll</option>
+          </select>
+        </div>
+        <div id="pagination-opts" class="sub-opts hidden">
+          <div class="field">
+            <label>Next button selector</label>
+            <input type="text" id="next-selector" placeholder="Auto-detected or manual">
+          </div>
+          <div class="field">
+            <label>Max pages</label>
+            <input type="number" id="max-pages" value="20" min="1" max="500">
+          </div>
+        </div>
+        <div id="scroll-opts" class="sub-opts hidden">
+          <div class="field">
+            <label>Max scrolls</label>
+            <input type="number" id="max-scrolls" value="50" min="1" max="500">
+          </div>
+        </div>
+        <div class="field">
+          <label>Delay between actions (ms)</label>
+          <input type="number" id="delay" value="1500" min="100" max="30000" step="100">
+        </div>
+        <div class="field">
+          <label>Max wait for dynamic content (ms)</label>
+          <input type="number" id="max-wait" value="5000" min="1000" max="60000" step="500">
+        </div>
+      </section>
+
+      <section id="step-columns" class="step">
+        <h2>3. Columns</h2>
+        <div id="column-config"></div>
+      </section>
+
+      <section id="step-actions" class="step">
+        <button id="btn-scrape" class="primary wide">Scrape Data</button>
+      </section>
+    </details>
+  </div>
+
+  <!-- ════════ OSINT TOOLS PAGE ════════ -->
+  <div id="page-osint" class="page">
+
+    <!-- Evidence chain -->
+    <section class="step">
+      <div class="osint-toggle">
+        <label class="toggle-row">
+          <input type="checkbox" id="opt-evidence" checked>
+          <span>Evidence Chain</span>
+        </label>
+        <p class="hint">Attach source URL, timestamp, and SHA-256 hash to all exports.</p>
+      </div>
+    </section>
+
+    <!-- Entity extraction -->
+    <section class="step">
+      <h2>Entity Extraction</h2>
+      <p class="hint">Regex scan — no element picking needed.</p>
+      <div class="osint-checks">
+        <label><input type="checkbox" id="ent-emails" checked> Emails</label>
+        <label><input type="checkbox" id="ent-phones" checked> Phones</label>
+        <label><input type="checkbox" id="ent-urls" checked> URLs</label>
+        <label><input type="checkbox" id="ent-socials" checked> Social Handles</label>
+        <label><input type="checkbox" id="ent-ips" checked> IP Addresses</label>
+        <label><input type="checkbox" id="ent-crypto" checked> Crypto Addresses</label>
+      </div>
+      <button id="btn-extract-entities" class="primary wide">Extract Entities</button>
+    </section>
+
+    <!-- Page snapshot -->
+    <section class="step">
+      <h2>Page Snapshot</h2>
+      <p class="hint">Capture page HTML and visible screenshot as evidence.</p>
+      <button id="btn-snapshot" class="primary wide">Capture Snapshot</button>
+    </section>
+
+    <!-- Link harvester -->
+    <section class="step">
+      <h2>Link Harvester</h2>
+      <p class="hint">Extract all links, grouped by domain.</p>
+      <div class="osint-checks">
+        <label><input type="checkbox" id="links-external" checked> External</label>
+        <label><input type="checkbox" id="links-internal" checked> Internal</label>
+        <label><input type="checkbox" id="links-mailto"> Mailto</label>
+        <label><input type="checkbox" id="links-tel"> Tel</label>
+      </div>
+      <button id="btn-harvest-links" class="primary wide">Harvest Links</button>
+    </section>
+
+    <!-- Auto-detect tables -->
+    <section class="step">
+      <h2>Auto-Detect Tables</h2>
+      <p class="hint">Find HTML tables and extract with one click.</p>
+      <button id="btn-detect-tables" class="primary wide">Detect Tables</button>
+      <div id="table-list" class="selector-list"></div>
+    </section>
+
+    <!-- Image extraction -->
+    <section class="step">
+      <h2>Image Extraction</h2>
+      <p class="hint">Pull all image URLs with alt text and dimensions.</p>
+      <div class="osint-checks">
+        <label><input type="checkbox" id="img-min-size" checked> Min 50px</label>
+        <label><input type="checkbox" id="img-with-alt"> Has alt text only</label>
+      </div>
+      <button id="btn-extract-images" class="primary wide">Extract Images</button>
+    </section>
+  </div>
+
+  <!-- ════════ SHARED: Preview + Export ════════ -->
+  <section id="step-preview" class="step hidden">
+    <h2>Preview <span id="row-count"></span></h2>
+    <div id="evidence-meta" class="evidence-meta hidden"></div>
+    <div id="category-bar" class="category-bar hidden"></div>
+    <div id="preview-table-wrap">
+      <table id="preview-table"></table>
+    </div>
+    <div class="export-bar">
+      <button id="btn-csv" class="export-btn">CSV</button>
+      <button id="btn-excel" class="export-btn">Excel</button>
+      <button id="btn-xml" class="export-btn">XML</button>
+      <button id="btn-json" class="export-btn">JSON</button>
+      <button id="btn-copy" class="export-btn">Copy</button>
+    </div>
+  </section>
+
+  <div id="status" class="status hidden"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+.dd-highlight {
+  outline: 2px solid #4a90d9 !important;
+  outline-offset: 1px !important;
+  background-color: rgba(74, 144, 217, 0.1) !important;
+  cursor: crosshair !important;
+}
+
+.dd-selected {
+  outline: 2px solid #27ae60 !important;
+  outline-offset: 1px !important;
+  background-color: rgba(39, 174, 96, 0.1) !important;
+}
+
+.dd-selector-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #111;
+  color: #f5f0eb;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  padding: 8px 16px;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.dd-selector-bar button {
+  background: #4a90d9;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.dd-selector-bar button:hover {
+  background: #357abd;
+}
+
+.dd-selector-bar button.dd-cancel {
+  background: #c0392b;
+}
+
+.dd-selector-bar .dd-selector-text {
+  flex: 1;
+  font-family: monospace;
+  color: #aaa;
+}
