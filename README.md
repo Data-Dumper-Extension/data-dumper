@@ -113,6 +113,14 @@ Data Dumper is designed for researchers, analysts, and investigators who need to
 
 ---
 
+## Support the Project
+
+If you find Data Dumper useful, consider supporting its development:
+
+[Buy Me a Coffee](https://buymeacoffee.com/datadumper)
+
+---
+
 ## License
 
 This project is licensed under the [GNU Affero General Public License v3.0](LICENSE).
